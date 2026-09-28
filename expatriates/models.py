@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class Expatriate(models.Model):
 
@@ -60,7 +61,6 @@ class Expatriate(models.Model):
 
 class Document(models.Model):
 
-
     class DocumentType(models.TextChoices):
         PASSPORT = 'PASSPORT', 'Passport'
         WORK_PERMIT = 'WORK_PERMIT', 'Work Permit'
@@ -81,7 +81,8 @@ class Document(models.Model):
     title = models.CharField(max_length=200)
 
     file = models.FileField(
-        upload_to='expatriate_documents/'
+        upload_to='expatriate_documents/',
+        storage=RawMediaCloudinaryStorage()
     )
 
     expiry_date = models.DateField(
@@ -95,4 +96,3 @@ class Document(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.expatriate.user.get_full_name()}"
-
