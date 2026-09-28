@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>All Expatriates | ELMCS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: 45px auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(300px, 1fr)
+            );
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+
+        .info {
+            margin: 9px 0;
+            color: #6b7280;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .agency {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 10px;
+            background: #eef2ff;
+            color: #3730a3;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .empty {
+            background: white;
+            padding: 45px;
+            text-align: center;
+            border-radius: 12px;
+            color: #6b7280;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>All Expatriates</h1>
+
+        <p>
+            Expatriates registered in the ELMCS system.
+        </p>
+
+    </div>
+
+
+    {% if expatriates %}
+
+        <div class="grid">
+
+            {% for expatriate in expatriates %}
+
+                <div class="card">
+
+                    <h2>
+                        {{ expatriate.user.get_full_name }}
+                    </h2>
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Nationality:
+                        </span>
+
+                        {{ expatriate.nationality }}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Passport:
+                        </span>
+
+                        {{ expatriate.passport_number }}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Job:
+                        </span>
+
+                        {{ expatriate.job_title }}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Employer:
+                        </span>
+
+                        {{ expatriate.employer }}
+
+                    </div>
+
+
+                    {% if expatriate.agency %}
+
+                        <div class="agency">
+
+                            Agency:
+                            {{ expatriate.agency.name }}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="agency">
+
+                            No Agency Assigned
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Expatriates Found</h2>
+
+            <p>
+                There are currently no expatriates
+                registered in the system.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="back-link"
+    >
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+
+</html>

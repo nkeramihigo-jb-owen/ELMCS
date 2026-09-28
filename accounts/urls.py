@@ -10,6 +10,7 @@ from .views import (
     my_agency,
     agency_documents,
     government_agencies,
+    government_expatriates,
 )
 
 urlpatterns = [
@@ -62,4 +63,9 @@ urlpatterns = [
     government_agencies,
     name='government_agencies'
 ),
+    path(
+        'government/expatriates/',
+        government_expatriates,
+        name='government_expatriates'
+    ),
 ]

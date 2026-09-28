@@ -188,3 +188,25 @@ def government_agencies(request):
             'agencies': agencies,
         }
     )
+
+@login_required
+def government_expatriates(request):
+
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    expatriates = Expatriate.objects.select_related(
+        'user',
+        'agency'
+    ).order_by(
+        'user__first_name',
+        'user__last_name'
+    )
+
+    return render(
+        request,
+        'accounts/government_expatriates.html',
+        {
+            'expatriates': expatriates,
+        }
+    )
