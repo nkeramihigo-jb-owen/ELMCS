@@ -1,182 +1,209 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Add Expatriate | ELMCS</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>Add Expatriate | ELMCS</title>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f7fb;
+        color: #1f2937;
+    }
+
+    nav {
+        background: #0f172a;
+        color: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav h2 {
+        margin: 0;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .header {
+        margin-bottom: 25px;
+    }
+
+    .header h1 {
+        margin-bottom: 8px;
+    }
+
+    .header p {
+        color: #64748b;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .agency-info {
+        background: #eff6ff;
+        border-left: 4px solid #2563eb;
+        padding: 15px;
+        margin-bottom: 30px;
+        border-radius: 6px;
+    }
+
+    .agency-info strong {
+        color: #1e3a8a;
+    }
+
+    .section {
+        margin-bottom: 35px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        margin: 0 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #0f172a;
+    }
+
+    .section-description {
+        color: #64748b;
+        font-size: 14px;
+        margin: -8px 0 20px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group.full {
+        grid-column: span 2;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        font-size: 15px;
+        font-family: inherit;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #2563eb;
+    }
+
+    .helptext {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 5px;
+    }
+
+    .errorlist {
+        color: #dc2626;
+        margin: 5px 0;
+        padding-left: 18px;
+        font-size: 14px;
+    }
+
+    .buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border-radius: 7px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .btn-primary {
+        background: #2563eb;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: #64748b;
+    }
+
+    @media (max-width: 700px) {
         nav {
-            background: #0f172a;
-            color: white;
-            padding: 18px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav h2 {
-            margin: 0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .header {
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #64748b;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-        }
-
-        .agency-info {
-            background: #eff6ff;
-            border-left: 4px solid #2563eb;
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 6px;
-        }
-
-        .agency-info strong {
-            color: #1e3a8a;
+            padding: 15px 20px;
         }
 
         .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
+            grid-template-columns: 1fr;
         }
 
         .form-group.full {
-            grid-column: span 2;
+            grid-column: span 1;
         }
 
-        label {
-            font-weight: 600;
-            margin-bottom: 7px;
+        .container {
+            margin: 25px auto;
         }
 
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            font-size: 15px;
+        .card {
+            padding: 20px;
         }
+    }
+</style>
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
 
-        .helptext {
-            font-size: 13px;
-            color: #64748b;
-            margin-top: 5px;
-        }
-
-        .errorlist {
-            color: #dc2626;
-            margin: 5px 0;
-            padding-left: 18px;
-            font-size: 14px;
-        }
-
-        .buttons {
-            margin-top: 30px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border-radius: 7px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #64748b;
-        }
-
-        @media (max-width: 700px) {
-            nav {
-                padding: 15px 20px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-group.full {
-                grid-column: span 1;
-            }
-
-            .container {
-                margin: 25px auto;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -184,80 +211,215 @@
 <nav>
     <h2>ELMCS</h2>
 
-    <div>
-        <span>{{ request.user.get_full_name }}</span>
-        <a href="{% url 'dashboard' %}">Dashboard</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+
+<div>
+    <span>{{ request.user.get_full_name }}</span>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'logout' %}">Logout</a>
+</div>
+
+
 </nav>
 
 <div class="container">
 
-    <div class="header">
-        <h1>Add Expatriate</h1>
-        <p>Register a new expatriate under your agency.</p>
+
+<div class="header">
+    <h1>Add Expatriate</h1>
+    <p>Register a new expatriate under your agency.</p>
+</div>
+
+<div class="card">
+
+    <div class="agency-info">
+        <strong>Agency:</strong>
+        {{ agency.name }}
     </div>
 
-    <div class="card">
+    <form method="POST">
 
-        <div class="agency-info">
-            <strong>Agency:</strong>
-            {{ agency.name }}
-        </div>
+        {% csrf_token %}
 
-        <form method="POST">
+        {{ form.non_field_errors }}
 
-            {% csrf_token %}
+        <!-- ACCOUNT INFORMATION -->
 
-            {{ form.non_field_errors }}
+        <div class="section">
+
+            <h2 class="section-title">
+                Account Information
+            </h2>
+
+            <p class="section-description">
+                Create the login account the expatriate will use to access ELMCS.
+            </p>
 
             <div class="form-grid">
 
                 {% for field in form %}
-                    <div class="form-group
-                        {% if field.name == 'address_in_uganda' %}
-                            full
-                        {% endif %}
-                    ">
+                    {% if field.name == 'first_name' or field.name == 'last_name' or field.name == 'username' or field.name == 'email' or field.name == 'password' %}
 
-                        {{ field.label_tag }}
+                        <div class="form-group">
 
-                        {{ field }}
+                            {{ field.label_tag }}
 
-                        {% if field.help_text %}
-                            <div class="helptext">
-                                {{ field.help_text }}
-                            </div>
-                        {% endif %}
+                            {{ field }}
 
-                        {{ field.errors }}
+                            {% if field.help_text %}
+                                <div class="helptext">
+                                    {{ field.help_text }}
+                                </div>
+                            {% endif %}
 
-                    </div>
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endif %}
                 {% endfor %}
 
             </div>
 
-            <div class="buttons">
+        </div>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                >
-                    Add Expatriate
-                </button>
 
-                <a
-                    href="{% url 'agency_expatriates' %}"
-                    class="btn btn-secondary"
-                >
-                    Cancel
-                </a>
+        <!-- PERSONAL INFORMATION -->
+
+        <div class="section">
+
+            <h2 class="section-title">
+                Personal Information
+            </h2>
+
+            <div class="form-grid">
+
+                {% for field in form %}
+                    {% if field.name == 'date_of_birth' or field.name == 'nationality' or field.name == 'passport_number' or field.name == 'gender' or field.name == 'phone' or field.name == 'address_in_uganda' %}
+
+                        <div class="form-group
+                            {% if field.name == 'address_in_uganda' %}
+                                full
+                            {% endif %}
+                        ">
+
+                            {{ field.label_tag }}
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <div class="helptext">
+                                    {{ field.help_text }}
+                                </div>
+                            {% endif %}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
 
             </div>
 
-        </form>
+        </div>
 
-    </div>
+
+        <!-- EMPLOYMENT INFORMATION -->
+
+        <div class="section">
+
+            <h2 class="section-title">
+                Employment Information
+            </h2>
+
+            <div class="form-grid">
+
+                {% for field in form %}
+                    {% if field.name == 'job_title' or field.name == 'employer' or field.name == 'employment_start_date' or field.name == 'employment_end_date' %}
+
+                        <div class="form-group">
+
+                            {{ field.label_tag }}
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <div class="helptext">
+                                    {{ field.help_text }}
+                                </div>
+                            {% endif %}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- WORK PERMIT INFORMATION -->
+
+        <div class="section">
+
+            <h2 class="section-title">
+                Work Permit Information
+            </h2>
+
+            <div class="form-grid">
+
+                {% for field in form %}
+                    {% if field.name == 'work_permit_number' or field.name == 'work_permit_expiry' %}
+
+                        <div class="form-group">
+
+                            {{ field.label_tag }}
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <div class="helptext">
+                                    {{ field.help_text }}
+                                </div>
+                            {% endif %}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Add Expatriate
+            </button>
+
+            <a
+                href="{% url 'agency_expatriates' %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
 
 </div>
 
@@ -269,4 +431,3 @@
 
 </body>
 </html>
-

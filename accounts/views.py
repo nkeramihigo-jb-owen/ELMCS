@@ -9,6 +9,7 @@ from monitoring.models import Verification
 from expatriates.forms import ExpatriateForm, DocumentForm
 from agencies.forms import AgencyForm
 from accounts.forms import AgencyUserForm
+from accounts.models import User
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -239,18 +240,26 @@ def agency_add_expatriate(request):
         )
 
         if form.is_valid():
+
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                role=User.Role.EXPATRIATE,
+            )
+
             expatriate = form.save(commit=False)
-
-            # Automatically assign the expatriate
-            # to the logged-in agency.
+            expatriate.user = user
             expatriate.agency = agency
-
             expatriate.save()
 
             return redirect(
                 'expatriate_detail',
                 expatriate_id=expatriate.id
             )
+
     else:
         form = ExpatriateForm(
             hide_agency=True
@@ -264,8 +273,6 @@ def agency_add_expatriate(request):
             'agency': agency,
         }
     )
-
-
 
 
 @login_required
