@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from .views import (
     login_view,
@@ -26,6 +27,8 @@ from .views import (
 )
 
 urlpatterns = [
+   path('', RedirectView.as_view(pattern_name='login', permanent=False)),
+
     path('login/', login_view, name='login'),
 
 

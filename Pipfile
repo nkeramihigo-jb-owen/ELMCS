@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 python-dotenv = "*"
+dj-database-url = "*"
+psycopg = {extras = ["binary"], version = "*"}
 
 [dev-packages]
 
