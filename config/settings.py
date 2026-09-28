@@ -29,8 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
-    'myprojelmcs.vercel.app',
-    '.vercel.app',
+    '*',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
