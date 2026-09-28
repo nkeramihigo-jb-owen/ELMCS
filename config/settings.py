@@ -29,15 +29,13 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv('ALLOWED_HOSTS', 'myprojelmcs-rkoin695c-nkjbo.vercel.app').split(',')
-    if host.strip()
+    'myprojelmcs.vercel.app',
+    '.vercel.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
-    if origin.strip()
+    'https://myprojelmcs.vercel.app',
+    'https://*.vercel.app',
 ]
 # Application definition
 
