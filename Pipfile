@@ -8,6 +8,8 @@ django = "*"
 python-dotenv = "*"
 dj-database-url = "*"
 psycopg = {extras = ["binary"], version = "*"}
+cloudinary = "*"
+django-cloudinary-storage = "*"
 
 [dev-packages]
 
