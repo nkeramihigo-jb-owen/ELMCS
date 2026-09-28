@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from expatriates.models import Expatriate, Document
 from agencies.models import Agency
 from django.utils import timezone
-
+from communications.models import Request, Complaint
+from monitoring.models import Verification
+from expatriates.forms import ExpatriateForm
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -60,19 +62,38 @@ def dashboard(request):
         )
 
     if request.user.role == 'GOVERNMENT':
-        return render(
-            request,
-            'accounts/government_dashboard.html',
-            {
-                'unread_notifications': unread_notifications,
-            }
-        )
+
+        total_expatriates = Expatriate.objects.count()
+
+        total_agencies = Agency.objects.count()
+
+        pending_verifications = Verification.objects.filter(
+            status=Verification.Status.PENDING
+        ).count()
+
+        active_work_permits = Expatriate.objects.filter(
+            work_permit_expiry__gte=timezone.now().date()
+        ).count()
+
+        pending_requests = Request.objects.filter(
+            status=Request.Status.PENDING
+        ).count()
+
+        pending_complaints = Complaint.objects.filter(
+            status=Complaint.Status.PENDING
+        ).count()
 
     return render(
         request,
-        'accounts/dashboard.html',
+        'accounts/government_dashboard.html',
         {
             'unread_notifications': unread_notifications,
+            'total_expatriates': total_expatriates,
+            'total_agencies': total_agencies,
+            'pending_verifications': pending_verifications,
+            'active_work_permits': active_work_permits,
+            'pending_requests': pending_requests,
+            'pending_complaints': pending_complaints,
         }
     )
 
@@ -106,6 +127,47 @@ def expatriate_documents(request):
         {
             'expatriate': expatriate,
             'documents': documents,
+        }
+    )
+
+@login_required
+def expatriate_detail(request, expatriate_id):
+
+    if request.user.role not in ['AGENCY', 'GOVERNMENT']:
+        return redirect('dashboard')
+
+    expatriate = get_object_or_404(
+        Expatriate.objects.select_related(
+            'user',
+            'agency'
+        ),
+        id=expatriate_id
+    )
+
+    if request.user.role == 'AGENCY':
+
+        agency = request.user.agencies.first()
+
+        if expatriate.agency != agency:
+            return redirect('agency_expatriates')
+
+    documents = expatriate.documents.all().order_by(
+        '-uploaded_at'
+    )
+
+    verification = expatriate.verifications.select_related(
+        'verified_by'
+    ).order_by(
+        '-created_at'
+    ).first()
+
+    return render(
+        request,
+        'accounts/expatriate_detail.html',
+        {
+            'expatriate': expatriate,
+            'documents': documents,
+            'verification': verification,
         }
     )
 
@@ -252,5 +314,47 @@ def government_work_permits(request):
         {
             'expatriates': expatriates,
             'today': timezone.now().date(),
+        }
+    )
+
+@login_required
+def edit_expatriate(request, expatriate_id):
+
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    expatriate = get_object_or_404(
+        Expatriate,
+        id=expatriate_id
+    )
+
+    if request.method == 'POST':
+
+        form = ExpatriateForm(
+            request.POST,
+            instance=expatriate
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect(
+                'expatriate_detail',
+                expatriate_id=expatriate.id
+            )
+
+    else:
+
+        form = ExpatriateForm(
+            instance=expatriate
+        )
+
+    return render(
+        request,
+        'accounts/edit_expatriate.html',
+        {
+            'expatriate': expatriate,
+            'form': form,
         }
     )

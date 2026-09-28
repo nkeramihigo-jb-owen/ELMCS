@@ -1,0 +1,43 @@
+from django import forms
+
+from .models import Expatriate
+
+
+class ExpatriateForm(forms.ModelForm):
+
+    class Meta:
+        model = Expatriate
+
+        fields = (
+            'agency',
+            'date_of_birth',
+            'nationality',
+            'passport_number',
+            'gender',
+            'phone',
+            'address_in_uganda',
+            'job_title',
+            'employer',
+            'employment_start_date',
+            'employment_end_date',
+            'work_permit_number',
+            'work_permit_expiry',
+        )
+
+        widgets = {
+            'date_of_birth': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
+
+            'employment_start_date': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
+
+            'employment_end_date': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
+
+            'work_permit_expiry': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
+        }
