@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from expatriates.models import Expatriate, Document
 from agencies.models import Agency
+from django.utils import timezone
 
 
 def login_view(request):
@@ -208,5 +209,48 @@ def government_expatriates(request):
         'accounts/government_expatriates.html',
         {
             'expatriates': expatriates,
+        }
+    )
+
+@login_required
+def government_documents(request):
+
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    documents = Document.objects.select_related(
+        'expatriate__user',
+        'expatriate__agency'
+    ).order_by(
+        '-uploaded_at'
+    )
+
+    return render(
+        request,
+        'accounts/government_documents.html',
+        {
+            'documents': documents,
+        }
+    )
+
+@login_required
+def government_work_permits(request):
+
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    expatriates = Expatriate.objects.select_related(
+        'user',
+        'agency'
+    ).order_by(
+        'work_permit_expiry'
+    )
+
+    return render(
+        request,
+        'accounts/government_work_permits.html',
+        {
+            'expatriates': expatriates,
+            'today': timezone.now().date(),
         }
     )

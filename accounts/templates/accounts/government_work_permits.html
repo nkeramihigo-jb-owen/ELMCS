@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ELMCS | Work Permits</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .back-button {
+            background: #1f3c88;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+
+        .permits {
+            display: grid;
+            gap: 20px;
+        }
+
+        .permit-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .permit-card h2 {
+            color: #1f3c88;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 6px;
+        }
+
+        .detail strong {
+            display: block;
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .expired {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .no-date {
+            background: #fff8e1;
+            color: #8d6e00;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            color: #666;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="brand">
+            ELMCS
+        </div>
+    </nav>
+
+
+    <main class="container">
+
+        <div class="page-header">
+
+            <div>
+                <h1>Work Permits</h1>
+
+                <p>
+                    Monitor expatriate work permit information and expiry dates.
+                </p>
+            </div>
+
+            <a href="{% url 'dashboard' %}" class="back-button">
+                Back to Dashboard
+            </a>
+
+        </div>
+
+
+        {% if expatriates %}
+
+            <div class="permits">
+
+                {% for expatriate in expatriates %}
+
+                    <div class="permit-card">
+
+                        <h2>
+                            {{ expatriate.user.get_full_name }}
+                        </h2>
+
+
+                        <div class="details">
+
+                            <div class="detail">
+                                <strong>PASSPORT NUMBER</strong>
+
+                                {{ expatriate.passport_number }}
+                            </div>
+
+
+                            <div class="detail">
+                                <strong>WORK PERMIT NUMBER</strong>
+
+                                {{ expatriate.work_permit_number }}
+                            </div>
+
+
+                            <div class="detail">
+                                <strong>EXPIRY DATE</strong>
+
+                                {{ expatriate.work_permit_expiry }}
+                            </div>
+
+
+                            <div class="detail">
+                                <strong>EMPLOYER</strong>
+
+                                {{ expatriate.employer }}
+                            </div>
+
+
+                            <div class="detail">
+                                <strong>JOB TITLE</strong>
+
+                                {{ expatriate.job_title }}
+                            </div>
+
+
+                            <div class="detail">
+                                <strong>AGENCY</strong>
+
+                                {% if expatriate.agency %}
+                                    {{ expatriate.agency.name }}
+                                {% else %}
+                                    No Agency
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        {% if expatriate.work_permit_expiry %}
+
+                            {% if expatriate.work_permit_expiry < today %}
+
+                                <span class="status expired">
+                                    Expired
+                                </span>
+
+                            {% else %}
+
+                                <span class="status active">
+                                    Active
+                                </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <span class="status no-date">
+                                No Expiry Date
+                            </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>No Work Permits Found</h2>
+
+                <p>
+                    There are currently no expatriate work permits registered.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+    </main>
+
+
+    <div class="footer">
+
+        ELMCS — Expatriate Labour Management & Coordination System
+
+        <br>
+
+        GitHub: nkeramihigo-jb-owen
+
+    </div>
+
+</body>
+
+</html>

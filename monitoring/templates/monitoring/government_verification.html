@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Verify Expatriate | ELMCS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 850px;
+            margin: 45px auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .info {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .status {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 7px 12px;
+            border-radius: 6px;
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 5px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>Expatriate Verification</h1>
+
+        <p>
+            Review and record the verification status
+            of this expatriate.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            {{ expatriate.user.get_full_name }}
+        </h2>
+
+        <div class="info">
+
+            <span class="label">
+                Nationality:
+            </span>
+
+            {{ expatriate.nationality }}
+
+        </div>
+
+
+        <div class="info">
+
+            <span class="label">
+                Passport Number:
+            </span>
+
+            {{ expatriate.passport_number }}
+
+        </div>
+
+
+        <div class="info">
+
+            <span class="label">
+                Job Title:
+            </span>
+
+            {{ expatriate.job_title }}
+
+        </div>
+
+
+        <div class="info">
+
+            <span class="label">
+                Employer:
+            </span>
+
+            {{ expatriate.employer }}
+
+        </div>
+
+
+        {% if expatriate.agency %}
+
+            <div class="info">
+
+                <span class="label">
+                    Labour Agency:
+                </span>
+
+                {{ expatriate.agency.name }}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if verification %}
+
+        <div class="card">
+
+            <h2>
+                Current Verification
+            </h2>
+
+            <div class="status">
+
+                {{ verification.get_status_display }}
+
+            </div>
+
+            {% if verification.verified_by %}
+
+                <div class="info">
+
+                    <span class="label">
+                        Verified By:
+                    </span>
+
+                    {{ verification.verified_by.get_full_name }}
+
+                </div>
+
+            {% endif %}
+
+
+            {% if verification.verified_at %}
+
+                <div class="info">
+
+                    <span class="label">
+                        Verification Date:
+                    </span>
+
+                    {{ verification.verified_at|date:"F d, Y H:i" }}
+
+                </div>
+
+            {% endif %}
+
+
+            {% if verification.notes %}
+
+                <div class="info">
+
+                    <span class="label">
+                        Notes:
+                    </span>
+
+                    {{ verification.notes }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+
+    <div class="card">
+
+        <h2>
+            Update Verification
+        </h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label for="status">
+                Verification Status
+            </label>
+
+            <select
+                name="status"
+                id="status"
+                required
+            >
+
+                <option
+                    value="PENDING"
+                    {% if verification and verification.status == 'PENDING' %}
+                        selected
+                    {% endif %}
+                >
+                    Pending
+                </option>
+
+                <option
+                    value="VERIFIED"
+                    {% if verification and verification.status == 'VERIFIED' %}
+                        selected
+                    {% endif %}
+                >
+                    Verified
+                </option>
+
+                <option
+                    value="REJECTED"
+                    {% if verification and verification.status == 'REJECTED' %}
+                        selected
+                    {% endif %}
+                >
+                    Rejected
+                </option>
+
+            </select>
+
+
+            <label for="notes">
+                Verification Notes
+            </label>
+
+            <textarea
+                name="notes"
+                id="notes"
+                placeholder="Enter verification notes..."
+            >{% if verification %}{{ verification.notes }}{% endif %}</textarea>
+
+
+            <button type="submit">
+                Save Verification
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <a
+        href="{% url 'government_expatriates' %}"
+        class="back-link"
+    >
+        ← Back to Expatriates
+    </a>
+
+</div>
+
+</body>
+
+</html>

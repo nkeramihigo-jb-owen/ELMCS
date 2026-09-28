@@ -14,6 +14,10 @@ urlpatterns = [
         include('communications.urls')
     ),
 
+    path(
+    '',
+    include('monitoring.urls')
+),
 
 ]
 

@@ -176,11 +176,23 @@
                 Review and verify expatriate records submitted through ELMCS.
             </p>
 
-            <a href="#">
+            <a href="{% url 'government_verifications' %}">
                 View Verifications →
             </a>
 
         </div>
+
+        <div class="card">
+    <h3>Documents</h3>
+
+    <p>
+        View documents submitted by registered expatriates.
+    </p>
+
+    <a href="{% url 'government_documents' %}">
+        View Documents →
+    </a>
+</div>
 
 
         <div class="card">
@@ -190,7 +202,7 @@
                 Monitor work permit information and expiry dates.
             </p>
 
-            <a href="#">
+           <a href="{% url 'government_work_permits' %}">
                 Monitor Permits →
             </a>
 

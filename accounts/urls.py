@@ -11,6 +11,8 @@ from .views import (
     agency_documents,
     government_agencies,
     government_expatriates,
+    government_documents,
+    government_work_permits,
 )
 
 urlpatterns = [
@@ -67,5 +69,17 @@ urlpatterns = [
         'government/expatriates/',
         government_expatriates,
         name='government_expatriates'
+    ),
+
+    path(
+    'government/documents/',
+    government_documents,
+    name='government_documents'
+),
+
+    path(
+        'government/work-permits/',
+        government_work_permits,
+        name='government_work_permits'
     ),
 ]
