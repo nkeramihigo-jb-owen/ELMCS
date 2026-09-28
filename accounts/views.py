@@ -120,9 +120,27 @@ def expatriate_profile(request):
 
 @login_required
 def expatriate_documents(request):
-    expatriate = request.user.expatriate_profile
-    documents = expatriate.documents.all()
+    if request.user.role != 'EXPATRIATE':
+        return redirect('dashboard')
 
+    expatriate = get_object_or_404(
+        Expatriate,
+        user=request.user
+    )
+
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.expatriate = expatriate
+            document.save()
+
+            return redirect('expatriate_documents')
+    else:
+        form = DocumentForm()
+
+    documents = expatriate.documents.all().order_by('-uploaded_at')
 
     return render(
         request,
@@ -130,9 +148,9 @@ def expatriate_documents(request):
         {
             'expatriate': expatriate,
             'documents': documents,
+            'form': form,
         }
     )
-
 @login_required
 def expatriate_detail(request, expatriate_id):
 

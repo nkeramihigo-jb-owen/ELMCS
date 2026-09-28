@@ -5,121 +5,214 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>ELMCS | My Documents</title>
 
-<title>ELMCS | My Documents</title>
-
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        color: #333;
-    }
-
-    .navbar {
-        background: #1f3c88;
-        color: white;
-        padding: 18px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .brand {
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 18px;
-    }
-
-    .nav-links a {
-        color: white;
-        text-decoration: none;
-    }
-
-    .container {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 0 20px;
-    }
-
-    .page-title {
-        margin-bottom: 25px;
-    }
-
-    .documents {
-        display: grid;
-        gap: 18px;
-    }
-
-    .document-card {
-        background: white;
-        padding: 22px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .document-info h3 {
-        color: #1f3c88;
-        margin-bottom: 8px;
-    }
-
-    .document-info p {
-        color: #666;
-        margin-bottom: 5px;
-    }
-
-    .view-button {
-        background: #1f3c88;
-        color: white;
-        text-decoration: none;
-        padding: 10px 16px;
-        border-radius: 6px;
-        white-space: nowrap;
-    }
-
-    .empty {
-        background: white;
-        padding: 35px;
-        text-align: center;
-        border-radius: 10px;
-        color: #666;
-    }
-
-    .back {
-        display: inline-block;
-        margin-top: 25px;
-        color: #1f3c88;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    @media (max-width: 650px) {
-        .document-card {
-            flex-direction: column;
-            align-items: flex-start;
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-    }
-</style>
 
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        /* Upload Section */
+
+        .upload-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            margin-bottom: 30px;
+        }
+
+        .upload-card h2 {
+            color: #1f3c88;
+            margin-bottom: 8px;
+        }
+
+        .upload-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccd3dc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #1f3c88;
+        }
+
+        .errorlist {
+            color: #dc2626;
+            margin-top: 5px;
+            padding-left: 18px;
+            font-size: 14px;
+        }
+
+        .upload-button {
+            margin-top: 20px;
+            background: #1f3c88;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .upload-button:hover {
+            background: #172f6b;
+        }
+
+        /* Documents */
+
+        .documents {
+            display: grid;
+            gap: 18px;
+        }
+
+        .document-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .document-info h3 {
+            color: #1f3c88;
+            margin-bottom: 8px;
+        }
+
+        .document-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .view-button {
+            background: #1f3c88;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 10px;
+            color: #666;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1f3c88;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 650px) {
+
+            .document-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+
+            .navbar {
+                padding: 18px 20px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+        }
+    </style>
 
 </head>
 
 <body>
-
 
 <nav class="navbar">
 
@@ -128,6 +221,7 @@
     </div>
 
     <div class="nav-links">
+
         <a href="{% url 'dashboard' %}">
             Dashboard
         </a>
@@ -135,6 +229,7 @@
         <a href="{% url 'logout' %}">
             Logout
         </a>
+
     </div>
 
 </nav>
@@ -146,6 +241,58 @@
         My Documents
     </h1>
 
+
+    <!-- Upload Document -->
+
+    <div class="upload-card">
+
+        <h2>Upload New Document</h2>
+
+        <p>
+            Upload your passport, work permit, employment contract,
+            or another relevant document.
+        </p>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <div class="form-grid">
+
+                {% for field in form %}
+
+                    <div class="form-group">
+
+                        {{ field.label_tag }}
+
+                        {{ field }}
+
+                        {{ field.errors }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button
+                type="submit"
+                class="upload-button"
+            >
+                Upload Document
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Existing Documents -->
 
     {% if documents %}
 
@@ -167,15 +314,19 @@
                         </p>
 
                         {% if document.expiry_date %}
+
                             <p>
                                 <strong>Expiry:</strong>
                                 {{ document.expiry_date }}
                             </p>
+
                         {% else %}
+
                             <p>
                                 <strong>Expiry:</strong>
                                 Not specified
                             </p>
+
                         {% endif %}
 
                         <p>
@@ -215,7 +366,10 @@
     {% endif %}
 
 
-    <a href="{% url 'dashboard' %}" class="back">
+    <a
+        href="{% url 'dashboard' %}"
+        class="back"
+    >
         ← Back to Dashboard
     </a>
 
