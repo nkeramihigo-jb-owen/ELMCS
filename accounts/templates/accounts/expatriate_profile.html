@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>ELMCS | My Profile</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+    }
+
+    .navbar {
+        background: #1f3c88;
+        color: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .page-title {
+        margin-bottom: 25px;
+    }
+
+    .profile-card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .profile-card h2 {
+        color: #1f3c88;
+        margin-bottom: 20px;
+    }
+
+    .info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .info-item {
+        padding: 15px;
+        background: #f7f8fa;
+        border-radius: 6px;
+    }
+
+    .info-item strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #555;
+    }
+
+    .back {
+        display: inline-block;
+        margin-top: 25px;
+        color: #1f3c88;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+        .info {
+            grid-template-columns: 1fr;
+        }
+
+        .navbar {
+            padding: 15px 20px;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="brand">
+        ELMCS
+    </div>
+
+    <div class="nav-links">
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <h1 class="page-title">
+        My Profile
+    </h1>
+
+
+    <div class="profile-card">
+
+        <h2>
+            Personal Information
+        </h2>
+
+        <div class="info">
+
+            <div class="info-item">
+                <strong>Full Name</strong>
+                {{ expatriate.user.get_full_name }}
+            </div>
+
+            <div class="info-item">
+                <strong>Username</strong>
+                {{ expatriate.user.username }}
+            </div>
+
+            <div class="info-item">
+                <strong>Nationality</strong>
+                {{ expatriate.nationality }}
+            </div>
+
+            <div class="info-item">
+                <strong>Gender</strong>
+                {{ expatriate.get_gender_display }}
+            </div>
+
+            <div class="info-item">
+                <strong>Date of Birth</strong>
+                {{ expatriate.date_of_birth }}
+            </div>
+
+            <div class="info-item">
+                <strong>Passport Number</strong>
+                {{ expatriate.passport_number }}
+            </div>
+
+            <div class="info-item">
+                <strong>Phone</strong>
+                {{ expatriate.phone }}
+            </div>
+
+            <div class="info-item">
+                <strong>Address in Uganda</strong>
+                {{ expatriate.address_in_uganda }}
+            </div>
+
+        </div>
+
+
+        <h2 style="margin-top: 30px;">
+            Employment Information
+        </h2>
+
+        <div class="info">
+
+            <div class="info-item">
+                <strong>Job Title</strong>
+                {{ expatriate.job_title }}
+            </div>
+
+            <div class="info-item">
+                <strong>Employer</strong>
+                {{ expatriate.employer }}
+            </div>
+
+            <div class="info-item">
+                <strong>Employment Start</strong>
+                {{ expatriate.employment_start_date }}
+            </div>
+
+            <div class="info-item">
+                <strong>Employment End</strong>
+                {{ expatriate.employment_end_date|default:"Not specified" }}
+            </div>
+
+            <div class="info-item">
+                <strong>Work Permit Number</strong>
+                {{ expatriate.work_permit_number }}
+            </div>
+
+            <div class="info-item">
+                <strong>Work Permit Expiry</strong>
+                {{ expatriate.work_permit_expiry }}
+            </div>
+
+            <div class="info-item">
+                <strong>Agency</strong>
+                {{ expatriate.agency|default:"Not assigned" }}
+            </div>
+
+        </div>
+
+
+        <a href="{% url 'dashboard' %}" class="back">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</main>
+
+
+</body>
+</html>

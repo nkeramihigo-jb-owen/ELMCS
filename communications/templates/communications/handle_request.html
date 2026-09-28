@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Handle Request | ELMCS</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 50px auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            margin-bottom: 18px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            color: #6b7280;
+        }
+
+        .description {
+            background: #f9fafb;
+            padding: 18px;
+            border-radius: 8px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        form p {
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        form input,
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        form textarea {
+            resize: vertical;
+        }
+
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .save-button {
+            border: none;
+            padding: 12px 22px;
+            background: #2563eb;
+            color: white;
+            border-radius: 7px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .save-button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Handle Request</h1>
+        <p>Review and respond to the expatriate's request.</p>
+    </div>
+
+
+    <!-- REQUEST DETAILS -->
+
+    <div class="card">
+
+        <h2>{{ request_item.subject }}</h2>
+
+        <div class="info">
+            <div class="label">Expatriate</div>
+
+            <div class="value">
+                {{ request_item.expatriate.user.get_full_name }}
+            </div>
+        </div>
+
+
+        <div class="info">
+            <div class="label">Submitted</div>
+
+            <div class="value">
+                {{ request_item.created_at|date:"F d, Y H:i" }}
+            </div>
+        </div>
+
+
+        <div class="info">
+
+            <div class="label">
+                Request Description
+            </div>
+
+            <div class="description">
+                {{ request_item.description }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESPONSE FORM -->
+
+    <div class="card">
+
+        <h2>Officer Response</h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button
+                type="submit"
+                class="save-button"
+            >
+                Save Response
+            </button>
+
+        </form>
+
+        <a
+            href="{% url 'officer_requests' %}"
+            class="back-link"
+        >
+            ← Back to Requests
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

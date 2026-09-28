@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Review Complaint | ELMCS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 45px 24px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .complaint-card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .complaint-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 23px;
+        }
+
+        .info {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .description-box {
+            margin-top: 20px;
+            padding: 18px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .description-title {
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .description {
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        form p {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .save-button {
+            width: 100%;
+            border: none;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .errorlist {
+            color: #dc2626;
+            margin: 5px 0 10px;
+            padding-left: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            .page-container {
+                padding: 25px 15px;
+            }
+
+            .complaint-card,
+            .form-card {
+                padding: 22px 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+
+    <div class="page-header">
+
+        <h1>Review Complaint</h1>
+
+        <p>
+            Review the complaint and provide an appropriate response.
+        </p>
+
+    </div>
+
+
+    <!-- Complaint Information -->
+
+    <div class="complaint-card">
+
+        <h2>
+            {{ complaint.subject }}
+        </h2>
+
+        <div class="info">
+
+            <strong>Expatriate:</strong>
+
+            {{ complaint.expatriate.user.get_full_name }}
+
+        </div>
+
+
+        <div class="info">
+
+            <strong>Submitted:</strong>
+
+            {{ complaint.created_at|date:"F d, Y - H:i" }}
+
+        </div>
+
+
+        <div class="description-box">
+
+            <div class="description-title">
+                Complaint Description
+            </div>
+
+            <div class="description">
+                {{ complaint.description }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Response Form -->
+
+    <div class="form-card">
+
+        <h2>
+            Officer Response
+        </h2>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="save-button">
+                Save Response
+            </button>
+
+        </form>
+
+
+        <a href="{% url 'officer_complaints' %}"
+           class="back-link">
+
+            ← Back to Complaints
+
+        </a>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

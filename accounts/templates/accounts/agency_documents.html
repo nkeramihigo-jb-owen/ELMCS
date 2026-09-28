@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Agency Documents | ELMCS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 45px auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .agency-name {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(300px, 1fr)
+            );
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .info {
+            margin: 9px 0;
+            color: #6b7280;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .view-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 17px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: 600;
+        }
+
+        .view-button:hover {
+            background: #1d4ed8;
+        }
+
+        .empty {
+            background: white;
+            padding: 45px;
+            text-align: center;
+            border-radius: 12px;
+            color: #6b7280;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>Agency Documents</h1>
+
+        {% if agency %}
+
+            <p>
+                Documents belonging to expatriates
+                managed by
+                <span class="agency-name">
+                    {{ agency.name }}
+                </span>
+            </p>
+
+        {% else %}
+
+            <p>
+                No agency has been assigned to your account.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if documents %}
+
+        <div class="grid">
+
+            {% for document in documents %}
+
+                <div class="card">
+
+                    <h2>
+                        {{ document.title }}
+                    </h2>
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Expatriate:
+                        </span>
+
+                        {{ document.expatriate.user.get_full_name }}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Document Type:
+                        </span>
+
+                        {{ document.get_document_type_display }}
+
+                    </div>
+
+
+                    {% if document.expiry_date %}
+
+                        <div class="info">
+
+                            <span class="label">
+                                Expiry Date:
+                            </span>
+
+                            {{ document.expiry_date|date:"F d, Y" }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="info">
+
+                        <span class="label">
+                            Uploaded:
+                        </span>
+
+                        {{ document.uploaded_at|date:"F d, Y H:i" }}
+
+                    </div>
+
+
+                    <a
+                        href="{{ document.file.url }}"
+                        target="_blank"
+                        class="view-button"
+                    >
+                        View Document
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Documents Found</h2>
+
+            <p>
+                There are currently no documents
+                belonging to expatriates in your agency.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="back-link"
+    >
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+
+</html>

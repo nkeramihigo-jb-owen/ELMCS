@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>ELMCS | My Documents</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+    }
+
+    .navbar {
+        background: #1f3c88;
+        color: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 18px;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .page-title {
+        margin-bottom: 25px;
+    }
+
+    .documents {
+        display: grid;
+        gap: 18px;
+    }
+
+    .document-card {
+        background: white;
+        padding: 22px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .document-info h3 {
+        color: #1f3c88;
+        margin-bottom: 8px;
+    }
+
+    .document-info p {
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .view-button {
+        background: #1f3c88;
+        color: white;
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+
+    .empty {
+        background: white;
+        padding: 35px;
+        text-align: center;
+        border-radius: 10px;
+        color: #666;
+    }
+
+    .back {
+        display: inline-block;
+        margin-top: 25px;
+        color: #1f3c88;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    @media (max-width: 650px) {
+        .document-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="brand">
+        ELMCS
+    </div>
+
+    <div class="nav-links">
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <h1 class="page-title">
+        My Documents
+    </h1>
+
+
+    {% if documents %}
+
+        <div class="documents">
+
+            {% for document in documents %}
+
+                <div class="document-card">
+
+                    <div class="document-info">
+
+                        <h3>
+                            {{ document.title }}
+                        </h3>
+
+                        <p>
+                            <strong>Type:</strong>
+                            {{ document.get_document_type_display }}
+                        </p>
+
+                        {% if document.expiry_date %}
+                            <p>
+                                <strong>Expiry:</strong>
+                                {{ document.expiry_date }}
+                            </p>
+                        {% else %}
+                            <p>
+                                <strong>Expiry:</strong>
+                                Not specified
+                            </p>
+                        {% endif %}
+
+                        <p>
+                            Uploaded:
+                            {{ document.uploaded_at|date:"d M Y" }}
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="{{ document.file.url }}"
+                        target="_blank"
+                        class="view-button"
+                    >
+                        View Document
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>No Documents Available</h3>
+
+            <p>
+                You currently have no documents uploaded to ELMCS.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a href="{% url 'dashboard' %}" class="back">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+
+</body>
+</html>

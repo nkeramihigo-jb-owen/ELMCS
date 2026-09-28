@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Manage Requests | ELMCS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .request-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .request-card h2 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        .request-info {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fff7ed;
+            color: #c2410c;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .response-box {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            border-radius: 6px;
+        }
+
+        .response-box p {
+            line-height: 1.6;
+        }
+
+        .no-response {
+            margin-top: 20px;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 11px 18px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .back-button:hover {
+            background: #111827;
+        }
+
+        .review-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 11px 18px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+.review-button:hover {
+    background: #1d4ed8;
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <h1>Manage Requests</h1>
+
+        <p>
+            Welcome,
+            {{ request.user.get_full_name|default:request.user.username }}
+        </p>
+
+    </div>
+
+
+    {% if requests %}
+
+        {% for item in requests %}
+
+            <div class="request-card">
+
+                <h2>{{ item.subject }}</h2>
+
+                <div class="request-info">
+                    <strong>Expatriate:</strong>
+                    {{ item.expatriate.user.get_full_name }}
+                </div>
+
+                <div class="request-info">
+                    <strong>Description:</strong>
+                    {{ item.description }}
+                </div>
+
+                <div class="request-info">
+
+                    <strong>Status:</strong>
+
+                    <span class="status">
+                        {{ item.get_status_display }}
+                    </span>
+
+                </div>
+
+                <div class="request-info">
+                    <strong>Submitted:</strong>
+                    {{ item.created_at }}
+                </div>
+
+
+                {% if item.response %}
+
+                    <div class="response-box">
+
+                        <strong>Response</strong>
+
+                        <p>
+                            {{ item.response }}
+                        </p>
+
+                        {% if item.responded_by %}
+
+                            <small>
+                                Responded by:
+                                {{ item.responded_by.get_full_name|default:item.responded_by.username }}
+                            </small>
+
+                        {% endif %}
+
+                        <a href="{% url 'handle_request' item.id %}"
+   class="review-button">
+
+    Review Request
+
+</a>
+
+                    </div>
+
+                {% else %}
+
+                    <p class="no-response">
+                        No response yet.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h2>No Requests</h2>
+
+            <p>
+                There are currently no requests to review.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a href="{% url 'dashboard' %}" class="back-button">
+        Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

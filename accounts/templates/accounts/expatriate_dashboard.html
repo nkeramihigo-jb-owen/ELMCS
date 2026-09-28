@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>ELMCS | Expatriate Dashboard</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+    }
+
+    .navbar {
+        background: #1f3c88;
+        color: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .logout {
+        color: white;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 14px;
+        border-radius: 6px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .welcome {
+        margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+        margin-bottom: 8px;
+    }
+
+    .welcome p {
+        color: #666;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h3 {
+        margin-bottom: 10px;
+        color: #1f3c88;
+    }
+
+    .card p {
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .card a {
+        display: inline-block;
+        margin-top: 15px;
+        color: #1f3c88;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .notification-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    margin-left: 8px;
+    background: #dc2626;
+    color: white;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: bold;
+}
+</style>
+
+
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="brand">
+        ELMCS
+    </div>
+
+    <div class="user-info">
+        <span>
+            {{ request.user.get_full_name|default:request.user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="welcome">
+        <h1>Expatriate Dashboard</h1>
+
+        <p>
+            Welcome to your ELMCS account.
+        </p>
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>My Profile</h3>
+
+            <p>
+                View your personal and employment information.
+            </p>
+
+           <a href="{% url 'expatriate_profile' %}">
+                View Profile →
+            </a>
+        </div>
+
+
+        <div class="card">
+            <h3>My Documents</h3>
+
+            <p>
+                View your passport, work permit and employment documents.
+            </p>
+
+            <a href="{% url 'expatriate_documents' %}">
+                View Documents →
+            </a>
+        </div>
+
+
+        <div class="card">
+            <h3>Requests</h3>
+
+            <p>
+                Submit and track requests sent through ELMCS.
+            </p>
+
+            <a href="{% url 'my_requests' %}">
+                View Requests →
+            </a>
+        </div>
+
+
+        <div class="card">
+            <h3>Complaints</h3>
+
+            <p>
+                Submit and track your complaints.
+            </p>
+
+           <a href="{% url 'my_complaints' %}">
+                View Complaints →
+            </a>
+        </div>
+
+
+        <div class="card">
+            <h3>Notifications
+                {% if unread_notifications > 0 %}
+    <span class="notification-count">
+        {{ unread_notifications }}
+    </span>
+{% endif %}
+            </h3>
+
+            <p>
+                View important updates and notifications.
+            </p>
+
+            <a href="{% url 'my_notifications' %}">
+                View Notifications →
+            </a>
+            
+        </div>
+
+
+        <div class="card">
+            <h3>Verification Status</h3>
+
+            <p>
+                Check the status of your government verification.
+            </p>
+
+            <a href="#">
+                Check Status →
+            </a>
+        </div>
+
+    </div>
+
+</main>
+
+
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>ELMCS | My Requests</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+    }
+
+    .navbar {
+        background: #1f3c88;
+        color: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 18px;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 15px;
+    }
+
+    .header h1 {
+        color: #1f3c88;
+    }
+
+    .button {
+        background: #1f3c88;
+        color: white;
+        text-decoration: none;
+        padding: 11px 17px;
+        border-radius: 6px;
+    }
+
+    .request-card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .request-header h2 {
+        color: #1f3c88;
+        font-size: 20px;
+    }
+
+    .status {
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #e9edf5;
+        color: #1f3c88;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .description {
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .meta {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .response {
+        background: #f4f6f8;
+        padding: 15px;
+        border-left: 4px solid #1f3c88;
+        margin-top: 15px;
+    }
+
+    .response strong {
+        display: block;
+        margin-bottom: 7px;
+    }
+
+    .empty {
+        background: white;
+        padding: 40px;
+        text-align: center;
+        border-radius: 10px;
+        color: #666;
+    }
+
+    @media (max-width: 650px) {
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .request-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="brand">
+        ELMCS
+    </div>
+
+    <div class="nav-links">
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="header">
+
+        <h1>
+            My Requests
+        </h1>
+
+        <a
+            href="{% url 'create_request' %}"
+            class="button"
+        >
+            + New Request
+        </a>
+
+    </div>
+
+
+    {% if requests %}
+
+        {% for request_item in requests %}
+
+            <div class="request-card">
+
+                <div class="request-header">
+
+                    <h2>
+                        {{ request_item.subject }}
+                    </h2>
+
+                    <span class="status">
+                        {{ request_item.get_status_display }}
+                    </span>
+
+                </div>
+
+
+                <div class="description">
+                    {{ request_item.description }}
+                </div>
+
+
+                <div class="meta">
+                    Submitted:
+                    {{ request_item.created_at|date:"d M Y, H:i" }}
+                </div>
+
+
+                {% if request_item.response %}
+
+                    <div class="response">
+
+                        <strong>
+                            Response
+                        </strong>
+
+                        {{ request_item.response }}
+
+                        {% if request_item.responded_by %}
+                            <div class="meta" style="margin-top: 8px;">
+                                Responded by:
+                                {{ request_item.responded_by.get_full_name|default:request_item.responded_by.username }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="meta">
+                        No response yet.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>
+                No Requests Yet
+            </h2>
+
+            <p style="margin-top: 10px;">
+                You have not submitted any requests.
+            </p>
+
+            <a
+                href="{% url 'create_request' %}"
+                class="button"
+                style="display: inline-block; margin-top: 20px;"
+            >
+                Submit Your First Request
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Agency | ELMCS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .agency-name {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .info {
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 16px;
+        }
+
+        .empty {
+            background: white;
+            padding: 45px;
+            text-align: center;
+            border-radius: 12px;
+            color: #6b7280;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>My Agency</h1>
+
+        <p>
+            Information about the agency associated
+            with your ELMCS account.
+        </p>
+
+    </div>
+
+
+    {% if agency %}
+
+        <div class="card">
+
+            <div class="agency-name">
+                {{ agency.name }}
+            </div>
+
+
+            <div class="info">
+
+                <span class="label">
+                    Registration Number
+                </span>
+
+                <span class="value">
+                    {{ agency.registration_number }}
+                </span>
+
+            </div>
+
+
+            <div class="info">
+
+                <span class="label">
+                    Address
+                </span>
+
+                <span class="value">
+                    {{ agency.address }}
+                </span>
+
+            </div>
+
+
+            <div class="info">
+
+                <span class="label">
+                    Phone
+                </span>
+
+                <span class="value">
+                    {{ agency.phone }}
+                </span>
+
+            </div>
+
+
+            <div class="info">
+
+                <span class="label">
+                    Email
+                </span>
+
+                <span class="value">
+                    {{ agency.email }}
+                </span>
+
+            </div>
+
+
+            <div class="info">
+
+                <span class="label">
+                    Registered On
+                </span>
+
+                <span class="value">
+                    {{ agency.created_at|date:"F d, Y" }}
+                </span>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Agency Assigned</h2>
+
+            <p>
+                Your account has not yet been associated
+                with an agency.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="back-link"
+    >
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+
+</html>
