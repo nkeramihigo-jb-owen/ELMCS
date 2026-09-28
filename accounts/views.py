@@ -7,6 +7,8 @@ from django.utils import timezone
 from communications.models import Request, Complaint
 from monitoring.models import Verification
 from expatriates.forms import ExpatriateForm, DocumentForm
+from agencies.forms import AgencyForm
+from accounts.forms import AgencyUserForm
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -172,6 +174,31 @@ def expatriate_detail(request, expatriate_id):
     )
 
 @login_required
+def expatriate_verification_status(request):
+    if request.user.role != 'EXPATRIATE':
+        return redirect('dashboard')
+
+    expatriate = get_object_or_404(
+        Expatriate,
+        user=request.user
+    )
+
+    verification = expatriate.verifications.select_related(
+        'verified_by'
+    ).order_by('-created_at').first()
+
+    return render(
+        request,
+        'accounts/expatriate_verification_status.html',
+        {
+            'expatriate': expatriate,
+            'verification': verification,
+        }
+    )
+
+
+
+@login_required
 def agency_expatriates(request):
 
     if request.user.role != 'AGENCY':
@@ -194,6 +221,52 @@ def agency_expatriates(request):
             'expatriates': expatriates,
         }
     )
+
+@login_required
+def agency_add_expatriate(request):
+    if request.user.role != 'AGENCY':
+        return redirect('dashboard')
+
+    agency = request.user.agencies.first()
+
+    if not agency:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = ExpatriateForm(
+            request.POST,
+            hide_agency=True
+        )
+
+        if form.is_valid():
+            expatriate = form.save(commit=False)
+
+            # Automatically assign the expatriate
+            # to the logged-in agency.
+            expatriate.agency = agency
+
+            expatriate.save()
+
+            return redirect(
+                'expatriate_detail',
+                expatriate_id=expatriate.id
+            )
+    else:
+        form = ExpatriateForm(
+            hide_agency=True
+        )
+
+    return render(
+        request,
+        'accounts/agency_add_expatriate.html',
+        {
+            'form': form,
+            'agency': agency,
+        }
+    )
+
+
+
 
 @login_required
 def my_agency(request):
@@ -252,6 +325,7 @@ def government_agencies(request):
         }
     )
 
+
 @login_required
 def government_agency_detail(request, agency_id):
     if request.user.role != 'GOVERNMENT':
@@ -272,6 +346,85 @@ def government_agency_detail(request, agency_id):
         {
             'agency': agency,
             'expatriates': expatriates,
+        }
+    )
+
+@login_required
+def government_register_agency(request):
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = AgencyForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('government_agencies')
+    else:
+        form = AgencyForm()
+
+    return render(
+        request,
+        'accounts/government_register_agency.html',
+        {'form': form}
+    )
+
+@login_required
+def government_edit_agency(request, agency_id):
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    agency = get_object_or_404(Agency, id=agency_id)
+
+    if request.method == 'POST':
+        form = AgencyForm(request.POST, instance=agency)
+
+        if form.is_valid():
+            form.save()
+            return redirect(
+                'government_agency_detail',
+                agency_id=agency.id
+            )
+    else:
+        form = AgencyForm(instance=agency)
+
+    return render(
+        request,
+        'accounts/government_edit_agency.html',
+        {
+            'agency': agency,
+            'form': form,
+        }
+    )
+
+@login_required
+def government_add_agency_user(request, agency_id):
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    agency = get_object_or_404(Agency, id=agency_id)
+
+    if request.method == 'POST':
+        form = AgencyUserForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            agency.users.add(user)
+
+            return redirect(
+                'government_agency_detail',
+                agency_id=agency.id
+            )
+    else:
+        form = AgencyUserForm()
+
+    return render(
+        request,
+        'accounts/government_add_agency_user.html',
+        {
+            'agency': agency,
+            'form': form,
         }
     )
 

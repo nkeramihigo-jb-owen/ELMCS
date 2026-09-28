@@ -25,10 +25,34 @@
             color: #1f2937;
         }
 
+        nav {
+            background: #0f172a;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             width: 90%;
             max-width: 850px;
             margin: 50px auto;
+            min-height: 70vh;
         }
 
         .header {
@@ -77,6 +101,7 @@
             text-align: center;
             border-radius: 10px;
             color: #6b7280;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
         }
 
         .back-link {
@@ -91,11 +116,58 @@
             text-decoration: underline;
         }
 
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+
+            .container {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+        }
+
     </style>
 
 </head>
 
 <body>
+
+<nav>
+
+    <h2>ELMCS</h2>
+
+    <div>
+
+        <span>
+            {{ request.user.get_full_name }}
+        </span>
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
 
 <div class="container">
 
@@ -156,6 +228,18 @@
 
 </div>
 
+
+<footer>
+
+    ELMCS — Expatriate Labour Management & Coordination System
+
+    <br>
+
+    GitHub: nkeramihigo-jb-owen
+
+</footer>
+
 </body>
 
 </html>
+

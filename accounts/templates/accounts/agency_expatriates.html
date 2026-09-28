@@ -139,6 +139,10 @@
 
         <h1>My Expatriates</h1>
 
+        <a href="{% url 'agency_add_expatriate' %}" class="view-button">
+    + Add Expatriate
+</a>
+
         {% if agency %}
 
             <p>
@@ -204,7 +208,7 @@
                     </div>
 
                     <a
-                       {% url 'expatriate_detail' expatriate.id %}
+                     href="{% url 'expatriate_detail' expatriate.id %}"
                         class="view-button"
                     >
                         View Profile

@@ -289,7 +289,10 @@
                 <p>Agency Management &amp; Information</p>
             </div>
 
-            <a href="#" class="edit-btn">
+           <a
+    href="{% url 'government_edit_agency' agency.id %}"
+    class="edit-btn"
+>
                 Edit Agency
             </a>
         </section>
@@ -327,7 +330,16 @@
 
 
             <div class="card">
-                <h2>Agency Users</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px;">
+    <h2 style="margin: 0;">Agency Users</h2>
+
+    <a
+        href="{% url 'government_add_agency_user' agency.id %}"
+        class="edit-btn"
+    >
+        + Add User
+    </a>
+</div>
 
                 {% if agency.users.all %}
                     <div class="user-list">

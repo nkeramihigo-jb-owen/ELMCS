@@ -18,6 +18,11 @@ from .views import (
     upload_expatriate_document,
     delete_expatriate_document,
     government_agency_detail,
+    government_register_agency,
+    government_edit_agency,
+    government_add_agency_user,
+    agency_add_expatriate,
+    expatriate_verification_status,
 )
 
 urlpatterns = [
@@ -114,4 +119,33 @@ urlpatterns = [
     government_agency_detail,
     name='government_agency_detail'
 ),
+    path(
+    'government/agencies/register/',
+    government_register_agency,
+    name='government_register_agency'
+),
+
+    path(
+    'government/agency/<int:agency_id>/edit/',
+    government_edit_agency,
+    name='government_edit_agency'
+),
+    path(
+    'government/agency/<int:agency_id>/users/add/',
+    government_add_agency_user,
+    name='government_add_agency_user'
+),
+    path(
+    'agency/expatriates/add/',
+    agency_add_expatriate,
+    name='agency_add_expatriate'
+),
+
+    path(
+        'expatriate/verification-status/',
+        expatriate_verification_status,
+        name='expatriate_verification_status'
+    ),
+
+
 ]

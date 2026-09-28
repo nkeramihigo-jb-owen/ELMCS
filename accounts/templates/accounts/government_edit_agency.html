@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Agency | ELMCS</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: none;
+            padding: 9px 15px;
+            border: 1px solid #6b7280;
+            border-radius: 6px;
+        }
+
+        .logout:hover {
+            background: #374151;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #374151;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .card h1 {
+            margin: 0 0 8px;
+            font-size: 26px;
+            color: #111827;
+        }
+
+        .subtitle {
+            margin: 0 0 30px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #374151;
+        }
+
+        .error {
+            color: #b91c1c;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .cancel-btn,
+        .submit-btn {
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            border: 1px solid #d1d5db;
+            color: #374151;
+            background: white;
+        }
+
+        .cancel-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .submit-btn {
+            border: none;
+            background: #1f2937;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: #111827;
+        }
+
+        .footer {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            padding: 30px 20px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar-right span {
+                display: none;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .cancel-btn,
+            .submit-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+            ELMCS
+        </div>
+
+        <div class="navbar-right">
+
+            <span>
+                {{ request.user.get_full_name|default:request.user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <a
+            href="{% url 'government_agency_detail' agency.id %}"
+            class="back-link"
+        >
+            ← Back to Agency
+        </a>
+
+
+        <div class="card">
+
+            <h1>Edit Agency</h1>
+
+            <p class="subtitle">
+                Update the official information for
+                <strong>{{ agency.name }}</strong>.
+            </p>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                {% for field in form %}
+
+                    <div class="form-group">
+
+                        {{ field.label_tag }}
+
+                        {{ field }}
+
+                        {% for error in field.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+
+                {% if form.non_field_errors %}
+
+                    {% for error in form.non_field_errors %}
+
+                        <div class="error">
+                            {{ error }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+
+                <div class="actions">
+
+                    <a
+                        href="{% url 'government_agency_detail' agency.id %}"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+
+        ELMCS — Expatriate Labour Management &amp; Coordination System
+
+        <br>
+
+        GitHub: nkeramihigo-jb-owen
+
+    </footer>
+
+</body>
+</html>
