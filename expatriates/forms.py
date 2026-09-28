@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Expatriate
+from .models import Expatriate, Document
 
 
 class ExpatriateForm(forms.ModelForm):
@@ -41,3 +41,21 @@ class ExpatriateForm(forms.ModelForm):
                 attrs={'type': 'date'}
             ),
         }
+
+class DocumentForm(forms.ModelForm):
+
+    class Meta:
+        model = Document
+
+        fields = (
+            'document_type',
+            'title',
+            'file',
+            'expiry_date',
+        )
+
+        widgets = {
+            'expiry_date': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
+        }        

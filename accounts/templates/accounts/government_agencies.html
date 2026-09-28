@@ -121,10 +121,9 @@
 
                 <div class="card">
 
-                    <h2>
-                        {{ agency.name }}
-                    </h2>
-
+                    <a href="{% url 'government_agency_detail' agency.id %}">
+    {{ agency.name }}
+</a>
                     <div class="info">
                         <span class="label">
                             Registration Number:

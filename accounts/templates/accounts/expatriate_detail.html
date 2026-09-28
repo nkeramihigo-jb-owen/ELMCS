@@ -355,6 +355,18 @@
 
         <h2>Documents</h2>
 
+        {% if request.user.role == 'GOVERNMENT' %}
+
+    <a
+        href="{% url 'upload_expatriate_document' expatriate.id %}"
+        class="button"
+        style="margin-bottom: 15px;"
+    >
+        Upload Document
+    </a>
+
+{% endif %}
+
         {% for document in documents %}
 
             <div class="document">
@@ -379,6 +391,17 @@
                 >
                     View Document
                 </a>
+                {% if request.user.role == 'GOVERNMENT' %}
+
+    <a
+        href="{% url 'delete_expatriate_document' document.id %}"
+        class="button"
+        style="background: #b42318;"
+    >
+        Delete
+    </a>
+
+{% endif %}
 
             </div>
 

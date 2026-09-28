@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ELMCS | Delete Document</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        .message {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .document-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        button,
+        .cancel {
+            padding: 11px 18px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #b42318;
+            color: white;
+        }
+
+        .cancel {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+        ELMCS
+    </div>
+
+    <div>
+        {{ request.user.get_full_name|default:request.user.username }}
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="card">
+
+        <h1>Delete Document?</h1>
+
+        <p class="message">
+            Are you sure you want to permanently remove this document
+            from the expatriate's official record?
+        </p>
+
+        <div class="document-name">
+            {{ document.title }}
+        </div>
+
+        <div class="actions">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Yes, Delete Document
+                </button>
+
+            </form>
+
+            <a
+                href="{% url 'expatriate_detail' document.expatriate.id %}"
+                class="cancel"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

@@ -6,7 +6,7 @@ from agencies.models import Agency
 from django.utils import timezone
 from communications.models import Request, Complaint
 from monitoring.models import Verification
-from expatriates.forms import ExpatriateForm
+from expatriates.forms import ExpatriateForm, DocumentForm
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -253,6 +253,29 @@ def government_agencies(request):
     )
 
 @login_required
+def government_agency_detail(request, agency_id):
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    agency = get_object_or_404(
+        Agency.objects.prefetch_related('users', 'expatriates'),
+        id=agency_id
+    )
+
+    expatriates = agency.expatriates.select_related(
+        'user'
+    ).order_by('-created_at')
+
+    return render(
+        request,
+        'accounts/government_agency_detail.html',
+        {
+            'agency': agency,
+            'expatriates': expatriates,
+        }
+    )
+
+@login_required
 def government_expatriates(request):
 
     if request.user.role != 'GOVERNMENT':
@@ -356,5 +379,79 @@ def edit_expatriate(request, expatriate_id):
         {
             'expatriate': expatriate,
             'form': form,
+        }
+    )
+
+@login_required
+def upload_expatriate_document(request, expatriate_id):
+
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    expatriate = get_object_or_404(
+        Expatriate,
+        id=expatriate_id
+    )
+
+    if request.method == 'POST':
+
+        form = DocumentForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            document = form.save(commit=False)
+
+            document.expatriate = expatriate
+
+            document.save()
+
+            return redirect(
+                'expatriate_detail',
+                expatriate_id=expatriate.id
+            )
+
+    else:
+
+        form = DocumentForm()
+
+    return render(
+        request,
+        'accounts/upload_expatriate_document.html',
+        {
+            'expatriate': expatriate,
+            'form': form,
+        }
+    )
+
+@login_required
+def delete_expatriate_document(request, document_id):
+
+    if request.user.role != 'GOVERNMENT':
+        return redirect('dashboard')
+
+    document = get_object_or_404(
+        Document.objects.select_related('expatriate'),
+        id=document_id
+    )
+
+    expatriate_id = document.expatriate.id
+
+    if request.method == 'POST':
+
+        document.delete()
+
+        return redirect(
+            'expatriate_detail',
+            expatriate_id=expatriate_id
+        )
+
+    return render(
+        request,
+        'accounts/delete_expatriate_document.html',
+        {
+            'document': document,
         }
     )
